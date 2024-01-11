@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { User } from '../models/user.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -33,5 +34,15 @@ export class UserService {
 
     // Return the generated account number (using id_number)
     return userData.idNumber;
+  }
+
+  async validatePassword(idNumber: string, password: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { idNumber: idNumber },
+    });
+    if (!user) {
+      return false;
+    }
+    return bcrypt.compare(password, user.password);
   }
 }
