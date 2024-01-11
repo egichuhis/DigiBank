@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
+import { User } from '../models/user.interface';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
     return !user;
   }
 
-  async registerUser(userData: Partial<UserEntity>): Promise<string> {
+  async registerUser(userData: Partial<User>): Promise<string> {
     // Check if the id_number is unique
     const isUnique = await this.isIdNumberUnique(userData.idNumber);
 

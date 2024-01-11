@@ -1,7 +1,7 @@
 // user.controller.ts
 import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { UserEntity } from '../models/user.entity';
+import { User } from '../models/user.interface';
 
 @Controller('api/register')
 export class UserController {
@@ -9,7 +9,7 @@ export class UserController {
 
   @Post()
   async registerUser(
-    @Body() userData: Partial<UserEntity>,
+    @Body() userData: Partial<User>,
   ): Promise<{ message: string; accountNumber: string }> {
     try {
       // Register the user
