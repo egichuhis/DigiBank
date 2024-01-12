@@ -22,14 +22,14 @@ export class AuthController {
     examples: {
       example1: {
         value: {
-          idNumber: '12345678',
-          password: 'password123',
+          username: '12121212',
+          password: 'edwin@123',
         },
       },
       example2: {
         value: {
-          idNumber: '12345679',
-          password: 'password124',
+          username: '13131313',
+          password: 'penina@123',
         },
       },
     },

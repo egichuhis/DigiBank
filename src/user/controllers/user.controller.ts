@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateUserDto } from '../dto/createUserDto';
 
 @Controller('user')
 export class UserController {
@@ -12,5 +13,10 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'User not found' })
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 }

@@ -13,8 +13,8 @@ export class UserService {
     return await this.userRepo.findOne({ where: { id: id } });
   }
 
-  async findOneWithIdNumber(idNumber: string) {
-    return await this.userRepo.findOne({ where: { idNumber: idNumber } });
+  async findOneWithUserName(userName: string) {
+    return await this.userRepo.findOne({ where: { idNumber: userName } });
   }
 
   async create(createUserDto: CreateUserDto) {
