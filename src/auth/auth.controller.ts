@@ -14,6 +14,28 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @ApiOperation({ summary: 'Login with user credentials' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+    },
+    examples: {
+      example1: {
+        value: {
+          idNumber: '12345678',
+          password: 'password123',
+        },
+      },
+      example2: {
+        value: {
+          idNumber: '12345679',
+          password: 'password124',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Login successful' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Request() req) {
     return await this.authService.login(req.user);
   }
