@@ -3,9 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserService } from 'src/user/services/user.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { LocalStrategy } from './strategies/local-strategy';
 
 @Module({
-  providers: [AuthService, UserService, JwtService],
+  providers: [AuthService, UserService, JwtService, LocalStrategy],
   controllers: [AuthController],
   imports: [
     JwtModule.register({
