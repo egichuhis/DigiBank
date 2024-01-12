@@ -28,6 +28,9 @@ export class User {
   })
   updatedAt: Date;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  balance: number;
+
   @BeforeInsert()
   async hashPasword() {
     this.password = await bcrypt.hash(this.password, 10);
