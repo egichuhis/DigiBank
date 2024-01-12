@@ -14,7 +14,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  @ApiOperation({ summary: 'Login with user credentials' })
+  @ApiOperation({ summary: 'Login with username(National ID) and Password' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -41,24 +41,24 @@ export class AuthController {
   }
 
   @Post('register')
-  @ApiOperation({ summary: 'Create a new user' })
+  @ApiOperation({ summary: 'User Registration' })
   @ApiBody({
     type: CreateUserDto,
     examples: {
       example1: {
         value: {
-          name: 'Mercy Elizabeth',
-          idNumber: '12345678',
-          email: 'mercy.liz@example.com',
-          password: 'password123',
+          name: 'Edwin Gichuhi',
+          nationalIdNumber: '12121212',
+          email: 'edwin@example.com',
+          password: 'edwin@123',
         },
       },
       example2: {
         value: {
-          name: 'Paul Kimono',
-          idNumber: '12345679',
-          email: 'paul.kim@example.com',
-          password: 'password124',
+          name: 'Penina Wahu',
+          nationalIdNumber: '13131313',
+          email: 'penina@example.com',
+          password: 'penina@123',
         },
       },
     },

@@ -7,7 +7,7 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(8)
-  idNumber: string;
+  nationalIdNumber: string;
 
   @IsString()
   @MinLength(6)

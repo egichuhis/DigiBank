@@ -17,7 +17,7 @@ export class User {
   name: string;
 
   @Column({ unique: true, nullable: false })
-  idNumber: string;
+  nationalIdNumber: string;
 
   @Column({ nullable: false })
   password: string;

@@ -21,7 +21,7 @@ export class AuthService {
 
   async login(user: User) {
     const payload = {
-      username: user.idNumber,
+      username: user.nationalIdNumber,
       sub: {
         name: user.name,
       },
@@ -36,7 +36,7 @@ export class AuthService {
 
   async refreshToken(user: User) {
     const payload = {
-      username: user.idNumber,
+      username: user.nationalIdNumber,
       sub: {
         name: user.name,
       },
