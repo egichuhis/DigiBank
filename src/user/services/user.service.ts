@@ -45,4 +45,8 @@ export class UserService {
     }
     return bcrypt.compare(password, user.password);
   }
+
+  async findOneWithIdNumber(idNumber: string) {
+    return await this.userRepository.findOne({ where: { idNumber: idNumber } });
+  }
 }
