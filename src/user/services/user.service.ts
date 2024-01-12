@@ -1,52 +1,30 @@
-// user.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../models/user.entity';
-import { User } from '../models/user.interface';
-import * as bcrypt from 'bcrypt';
+import { CreateUserDto, UpdateUserDto } from '../dto/createUserDto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
-
-  async isIdNumberUnique(idNumber: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({
-      where: { idNumber: idNumber },
-    });
-    return !user;
+  async findOne(id: number) {
+    return await this.userRepo.findOne({ where: { id: id } });
   }
 
-  async registerUser(userData: Partial<User>): Promise<string> {
-    // Check if the id_number is unique
-    const isUnique = await this.isIdNumberUnique(userData.idNumber);
-
-    if (!isUnique) {
-      throw new Error('ID number already exists');
-    }
-
-    // Save the user to the database
-    const newUser = this.userRepository.create(userData);
-    await this.userRepository.save(newUser);
-
-    // Return the generated account number (using id_number)
-    return userData.idNumber;
+  async findOneWithUserName(userName: string) {
+    return await this.userRepo.findOne({ where: { email: userName } });
   }
 
-  async validatePassword(idNumber: string, password: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({
-      where: { idNumber: idNumber },
-    });
-    if (!user) {
-      return false;
-    }
-    return bcrypt.compare(password, user.password);
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.userRepo.create(createUserDto);
+    await this.userRepo.save(user);
+    const { password, ...result } = user;
+    return result;
   }
 
-  async findOneWithIdNumber(idNumber: string) {
-    return await this.userRepository.findOne({ where: { idNumber: idNumber } });
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepo.update(id, updateUserDto);
   }
 }
