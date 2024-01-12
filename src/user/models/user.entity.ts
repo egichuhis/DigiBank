@@ -54,3 +54,5 @@ export class UserEntity implements User {
     }
   }
 }
+
+export { User };
