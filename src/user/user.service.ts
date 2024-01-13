@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from '../dto/createUserDto';
-import { UpdateUserBalanceDto } from '../dto/updateUserBalance.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/createUserDto';
 
 @Injectable()
 export class UserService {
@@ -15,15 +14,12 @@ export class UserService {
   }
 
   async findOneWithUserName(userName: string) {
-    return await this.userRepo.findOne({
-      where: { nationalIdNumber: userName },
-    });
+    return await this.userRepo.findOne({ where: { email: userName } });
   }
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepo.create(createUserDto);
     await this.userRepo.save(user);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = user;
     return result;
   }
@@ -32,7 +28,7 @@ export class UserService {
     return await this.userRepo.update(id, updateUserDto);
   }
 
-  async updateBalance(id: number, updateBalanceDto: UpdateUserBalanceDto) {
-    return await this.userRepo.update(id, updateBalanceDto);
+  async save(user: User): Promise<User> {
+    return await this.userRepo.save(user);
   }
 }

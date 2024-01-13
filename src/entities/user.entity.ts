@@ -1,13 +1,9 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ unique: true, nullable: false })
-  nationalIdNumber: string;
 
   @Column({ unique: true, nullable: false })
   name: string;
