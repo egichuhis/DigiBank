@@ -32,6 +32,7 @@ export class UserController {
   //   return this.commentService.findUserComments(id);
   // }
 
+  @UseGuards(JwtGuard)
   @Get(':id/balance')
   async checkBalance(@Param('id') id: string) {
     const userId = Number(id);
@@ -45,6 +46,7 @@ export class UserController {
     return { balance: user.balance };
   }
 
+  @UseGuards(JwtGuard)
   @Post(':id/deposit')
   async deposit(@Param('id') id: string, @Body() body: { amount: number }) {
     const userId = Number(id);
@@ -55,13 +57,16 @@ export class UserController {
       throw new NotFoundException('User not found');
     }
 
-    user.balance += body.amount;
+    const depositAmount = Math.round(body.amount * 100);
+
+    user.balance += depositAmount;
 
     await this.userService.save(user);
 
     return { balance: user.balance };
   }
 
+  @UseGuards(JwtGuard)
   @Post(':id/withdraw')
   async withdraw(@Param('id') id: string, @Body() body: { amount: number }) {
     const userId = Number(id);
