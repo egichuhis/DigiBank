@@ -5,16 +5,17 @@ import {
   Request,
   Post,
   Body,
+  Param,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('user')
-@UseGuards(JwtGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(JwtGuard)
   @Get('balance')
   @ApiOperation({ summary: 'Check bank balance' })
   @ApiResponse({
@@ -32,6 +33,7 @@ export class UserController {
     return { balance: user.balance };
   }
 
+  @UseGuards(JwtGuard)
   @Post('deposit')
   @ApiOperation({ summary: 'Deposit money to the bank account' })
   @ApiBody({
@@ -56,6 +58,7 @@ export class UserController {
     return { message: 'Deposit successful', balance: user.balance };
   }
 
+  @UseGuards(JwtGuard)
   @Post('withdraw')
   @ApiOperation({ summary: 'Withdraw money from the bank account' })
   @ApiBody({
