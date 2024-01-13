@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   nationalIdNumber: string;
 
   @Column({ unique: true, nullable: false })
@@ -27,6 +27,9 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  balance: number;
 
   @BeforeInsert()
   async hashPasword() {

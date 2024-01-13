@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from '../dto/createUserDto';
+import { UpdateUserBalanceDto } from '../dto/updateUserBalance.dto';
 
 @Injectable()
 export class UserService {
@@ -22,11 +23,16 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepo.create(createUserDto);
     await this.userRepo.save(user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = user;
     return result;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     return await this.userRepo.update(id, updateUserDto);
+  }
+
+  async updateBalance(id: number, updateBalanceDto: UpdateUserBalanceDto) {
+    return await this.userRepo.update(id, updateBalanceDto);
   }
 }

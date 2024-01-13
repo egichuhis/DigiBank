@@ -1,9 +1,10 @@
 import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth-guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserService } from 'src/user/services/user.service';
 import { CreateUserDto } from 'src/user/dto/createUserDto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { RefreshJwtGuard } from './guards/refresh-jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -66,5 +67,26 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'User created successfully' })
   async registerUser(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
+  }
+
+  @UseGuards(RefreshJwtGuard)
+  @Post('refresh')
+  @ApiOperation({ summary: 'Refresh JWT token' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+    },
+    examples: {
+      example: {
+        value: {
+          refreshToken: 'your_refresh_token_here',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'JWT token refreshed successfully' })
+  @ApiResponse({ status: 401, description: 'Invalid refresh token' })
+  async refreshToken(@Request() req) {
+    return this.authService.refreshToken(req.user);
   }
 }
