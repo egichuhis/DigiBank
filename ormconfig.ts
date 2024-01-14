@@ -3,11 +3,11 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 const config: PostgresConnectionOptions = {
   type: 'postgres',
-  database: process.env.POSTGRES_DB,
-  host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT),
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  database: 'digibank_postgres',
+  host: 'dpg-cmhj3sud3nmc73cf4gt0-a',
+  port: 5432,
+  username: 'digibank_postgres_user',
+  password: 'uNu5JcROzg1xerKQnEntg1nnZ6eKGdC6',
   entities: [User],
   synchronize: true,
 };
