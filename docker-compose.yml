@@ -1,20 +1,25 @@
 version: '3'
+
 services:
-  db:
-    image: postgres
-    restart: always
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
+  nest-api:
+    image: digibank-api
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 5432:5432
-
+      - "3000:3000"
     environment:
-      - POSTGRES_DB=testDB
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_HOST: dpg-cmhj3sud3nmc73cf4gt0-a
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: digibank_postgres_user
+      POSTGRES_PASSWORD: uNu5JcROzg1xerKQnEntg1nnZ6eKGdC6
+      POSTGRES_DB: digibank_postgres
+    depends_on:
+      - database
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  database:
+    image: digibank_postgres
+    environment:
+      POSTGRES_DB: postgresql_posts
+      POSTGRES_USER: digibank_postgres_user
+      POSTGRES_PASSWORD: uNu5JcROzg1xerKQnEntg1nnZ6eKGdC6
