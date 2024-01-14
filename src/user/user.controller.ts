@@ -26,12 +26,6 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  // @UseGuards(JwtGuard)
-  // @Get(':id/comments')
-  // getUserComment(@Param('id') id: string) {
-  //   return this.commentService.findUserComments(id);
-  // }
-
   @UseGuards(JwtGuard)
   @Get(':id/balance')
   async checkBalance(@Param('id') id: string) {
@@ -57,9 +51,9 @@ export class UserController {
       throw new NotFoundException('User not found');
     }
 
-    const depositAmount = Math.round(body.amount * 100);
+    const depositAmountInShillings = Math.round(body.amount);
 
-    user.balance += depositAmount;
+    user.balance += depositAmountInShillings;
 
     await this.userService.save(user);
 
@@ -77,11 +71,13 @@ export class UserController {
       throw new NotFoundException('User not found');
     }
 
-    if (user.balance < body.amount) {
+    const withdrawalAmountInShillings = Math.round(body.amount);
+
+    if (user.balance < withdrawalAmountInShillings) {
       throw new NotFoundException('Insufficient funds');
     }
 
-    user.balance -= body.amount;
+    user.balance -= withdrawalAmountInShillings;
 
     await this.userService.save(user);
 

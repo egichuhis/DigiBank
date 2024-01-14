@@ -24,7 +24,7 @@ export class User {
   })
   updatedAt: Date;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'integer', default: 5000 })
   balance: number;
 
   @BeforeInsert()
