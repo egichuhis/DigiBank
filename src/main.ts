@@ -17,12 +17,9 @@ async function bootstrap() {
 
   // Swagger setup
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('DigiBank API')
-    .setDescription(
-      'API for DigiBank to check balance, deposit, and withdraw funds',
-    )
     .setVersion('1.0')
-    .addTag('banking', 'Operations related to DigiBank')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
