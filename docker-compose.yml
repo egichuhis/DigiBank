@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  network-creator:
-    image: alpine:latest
-    command: ["sh", "-c", "docker network create digibank-network"]
-    depends_on:
-      - db
-    networks:
-      - my-network
-
   digibank-api:
     image: digibank-api
     build:
@@ -17,13 +9,18 @@ services:
     ports:
       - "3000:3000"
     environment:
-      jwt_secret: secretjwt4565
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: digibank-db
     depends_on:
       - database
-    networks:
-      - my-network
 
-networks:
-  my-network:
-    external: true
-    name: digibank-network
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: digibank-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+
