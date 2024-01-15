@@ -1,6 +1,5 @@
 import {
   Body,
-  Request,
   Controller,
   Get,
   Param,
@@ -8,26 +7,35 @@ import {
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUserDto';
 import { UserService } from './user.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiBearerAuth, ApiQuery, ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(JwtGuard)
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
   }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
+  // @Post()
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.userService.create(createUserDto);
+  // }
 
   @UseGuards(JwtGuard)
   @Get(':id/balance')
+  @ApiBearerAuth()
+  @ApiQuery({
+    name: 'access_token',
+    required: true,
+    type: 'string',
+  })
   async checkBalance(@Param('id') id: string) {
     const userId = Number(id);
 
@@ -42,6 +50,21 @@ export class UserController {
 
   @UseGuards(JwtGuard)
   @Post(':id/deposit')
+  @ApiBearerAuth()
+  @ApiQuery({
+    name: 'access_token',
+    required: true,
+    type: 'string',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        amount: { type: 'number' },
+      },
+      example: { amount: 500 },
+    },
+  })
   async deposit(@Param('id') id: string, @Body() body: { amount: number }) {
     const userId = Number(id);
 
@@ -62,6 +85,21 @@ export class UserController {
 
   @UseGuards(JwtGuard)
   @Post(':id/withdraw')
+  @ApiBearerAuth()
+  @ApiQuery({
+    name: 'access_token',
+    required: true,
+    type: 'string',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        amount: { type: 'number' },
+      },
+      example: { amount: 500 },
+    },
+  })
   async withdraw(@Param('id') id: string, @Body() body: { amount: number }) {
     const userId = Number(id);
 
