@@ -9,9 +9,10 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiQuery, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -31,11 +32,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Get(':id/balance')
   @ApiBearerAuth()
-  @ApiQuery({
-    name: 'access_token',
-    required: true,
-    type: 'string',
-  })
   async checkBalance(@Param('id') id: string) {
     const userId = Number(id);
 
@@ -51,11 +47,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Post(':id/deposit')
   @ApiBearerAuth()
-  @ApiQuery({
-    name: 'access_token',
-    required: true,
-    type: 'string',
-  })
   @ApiBody({
     schema: {
       type: 'object',
@@ -86,11 +77,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Post(':id/withdraw')
   @ApiBearerAuth()
-  @ApiQuery({
-    name: 'access_token',
-    required: true,
-    type: 'string',
-  })
   @ApiBody({
     schema: {
       type: 'object',
