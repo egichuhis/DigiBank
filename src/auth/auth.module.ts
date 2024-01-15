@@ -23,7 +23,7 @@ import { RefreshJwtStrategy } from './strategies/refreshToken.strategy';
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: `${process.env.jwt_secret}`,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '120s' },
     }),
   ],
 })
