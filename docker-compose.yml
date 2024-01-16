@@ -1,20 +1,26 @@
 version: '3'
+
 services:
-  db:
-    image: postgres
-    restart: always
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
+  digibank-api:
+    image: digibank-api
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 5432:5432
-
+      - "3000:3000"
     environment:
-      - POSTGRES_DB=testDB
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: digitap
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: digibank-db
+    depends_on:
+      - database
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: digibank-db
+      POSTGRES_USER: digitap
+      POSTGRES_PASSWORD: root
+
